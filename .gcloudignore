@@ -1,0 +1,9 @@
+.gcloudignore
+.gitignore
+.python-version
+.poetry.lock
+pyproject.toml
+.gitkeep
+README.md
+
+#!include:.gitignore
