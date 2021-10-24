@@ -6,6 +6,7 @@ steps:
       - deploy
       - ${_FUNCTION_NAME}
       - --entry-point=main
+      - --region=asia-northeast1
       - --runtime=python39
       - --source=.
       - --trigger-topic=${_TOPIC_ID}
