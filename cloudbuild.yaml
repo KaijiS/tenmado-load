@@ -1,0 +1,12 @@
+steps:
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    args:
+      - gcloud
+      - functions
+      - deploy
+      - ${_FUNCTION_NAME}
+      - --entry-point=main
+      - --runtime=python39
+      - --source=.
+      - --trigger-topic=${_TOPIC_ID}
+      - --env-vars-file=${_ENV_FILE_NAME}
