@@ -35,7 +35,7 @@ def to_gcs(bucket_name: str, filepath: str, upload_path: str):
     params:
         bucket_name: str: バケット名
         filepath: str: GCS上のアップロード先ファイルのパス
-        download_path: str: アップロード対象ファイルパス
+        upload_path: str: アップロード対象ファイルパス
     """
     client = storage.Client()
 
