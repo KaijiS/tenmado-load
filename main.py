@@ -1,5 +1,7 @@
 import base64
 
+from services import weatherforcastservice
+
 from logging import getLogger
 from logging import DEBUG
 from logging import StreamHandler
@@ -21,8 +23,14 @@ def main(event, context):
     pubsub_message = base64.b64decode(event["data"]).decode("utf-8")
     # ただのトリガーなのでpubsumメッセージ内容は無視
 
-    # 全気象台分リクエスト実行しcsv出力
+    # 全気象台分リクエスト実行しローカルにcsv出力
+    weatherforcastservice.request_weather_forecast()
+
+    # 出力したcsvをGCSへアップロード
+    weatherforcastservice.upload_weatherforecastfiles_to_gcs()
 
     # 出力したCSVファイルをBigQueryへinsert
+
+    # GCSのcsvを削除
 
     logger.info("finish tenmado-load")

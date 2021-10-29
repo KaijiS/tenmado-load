@@ -1,0 +1,15 @@
+# utils/decorator.pyの set_configで呼び出されセットされる
+
+tmp_file_dir: ".tmp_files"
+
+gcs_import_dir: "import"
+
+fewdays_weather_filename: "fewdays_weather.csv"
+tomorrow_pops_filename: "tomorrow_pops.csv"
+tomorrow_temps_filename: "tomorrow_temps.csv"
+week_weather_filename: "week_weather.csv"
+week_temps_filename: "week_tempsr.csv"
+past_tempavg_filename: "past_tempavg.csv"
+past_precopitationavg_filename: "past_precopitationavg.csv"
+
+import_datasetname: "tenmado_import"
