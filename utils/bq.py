@@ -169,7 +169,7 @@ def file_to_table(
         dataset_name: str: データセット名,
         table_name: str: テーブル名,
         table_schema_path: スキーマ定義ファイルパス
-        source_file_uri: str: 取り込み元ファイルURI,
+        source_file_uri: str: 取り込み元ファイルURI("gs://"から始まるURI),
         replace: bool: 置き換えるか否か(default: Flase)
         partition_field: str: パーティションフィールド指定
         skip_leading_rows: スキップ行数

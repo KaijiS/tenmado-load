@@ -1,0 +1,47 @@
+[
+    {
+        "description": "取得日時",
+        "name": "get_datetime",
+        "type": "DATETIME"
+    },
+    {
+        "description": "気象情報レポート日時",
+        "name": "report_datetime",
+        "type": "DATETIME"
+    },
+    {
+        "description": "気象台名",
+        "name": "meteorological_observatory_name",
+        "type": "STRING"
+    },
+    {
+        "description": "ラージエリアコード",
+        "name": "large_area_code",
+        "type": "STRING"
+    },
+    {
+        "description": "ラージエリア名",
+        "name": "large_area_name",
+        "type": "STRING"
+    },
+    {
+        "description": "予報日",
+        "name": "forecast_target_date",
+        "type": "DATE"
+    },
+    {
+        "description": "天気コード",
+        "name": "weather_code",
+        "type": "STRING"
+    },
+    {
+        "description": "降水確率",
+        "name": "pop",
+        "type": "FLOAT"
+    },
+    {
+        "description": "信頼度",
+        "name": "reliability",
+        "type": "STRING"
+    }
+]

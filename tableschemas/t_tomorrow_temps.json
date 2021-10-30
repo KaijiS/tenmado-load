@@ -1,0 +1,42 @@
+[
+    {
+        "description": "取得日時",
+        "name": "get_datetime",
+        "type": "DATETIME"
+    },
+    {
+        "description": "気象情報レポート日時",
+        "name": "report_datetime",
+        "type": "DATETIME"
+    },
+    {
+        "description": "気象台名",
+        "name": "meteorological_observatory_name",
+        "type": "STRING"
+    },
+    {
+        "description": "都市コード",
+        "name": "city_code",
+        "type": "STRING"
+    },
+    {
+        "description": "都市名",
+        "name": "citya_name",
+        "type": "STRING"
+    },
+    {
+        "description": "予報日",
+        "name": "forecast_target_date",
+        "type": "DATE"
+    },
+    {
+        "description": "最低気温",
+        "name": "lowest_temperature",
+        "type": "FLOAT"
+    },
+    {
+        "description": "最高気温",
+        "name": "highest_temperature",
+        "type": "FLOAT"
+    }
+]

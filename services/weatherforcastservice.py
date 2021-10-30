@@ -81,15 +81,25 @@ def request_weather_forecast(config):
 
     # ファイル出力
     fewdays_weather_df.to_csv(
-        f"{config.tmp_file_dir}/{config.fewdays_weather_filename}"
+        f"{config.tmp_file_dir}/{config.import_data.fewdays_weather.filename}"
     )
-    tomorrow_pops_df.to_csv(f"{config.tmp_file_dir}/{config.tomorrow_pops_filename}")
-    tomorrow_temps_df.to_csv(f"{config.tmp_file_dir}/{config.tomorrow_temps_filename}")
-    week_weather_df.to_csv(f"{config.tmp_file_dir}/{config.week_weather_filename}")
-    week_temps_df.to_csv(f"{config.tmp_file_dir}/{config.week_temps_filename}")
-    past_tempavg_df.to_csv(f"{config.tmp_file_dir}/{config.past_tempavg_filename}")
+    tomorrow_pops_df.to_csv(
+        f"{config.tmp_file_dir}/{config.import_data.tomorrow_pops.filename}"
+    )
+    tomorrow_temps_df.to_csv(
+        f"{config.tmp_file_dir}/{config.import_data.tomorrow_temps.filename}"
+    )
+    week_weather_df.to_csv(
+        f"{config.tmp_file_dir}/{config.import_data.week_weather.filename}"
+    )
+    week_temps_df.to_csv(
+        f"{config.tmp_file_dir}/{config.import_data.week_temps.filename}"
+    )
+    past_tempavg_df.to_csv(
+        f"{config.tmp_file_dir}/{config.import_data.past_tempavg.filename}"
+    )
     past_precopitationavg_df.to_csv(
-        f"{config.tmp_file_dir}/{config.past_precopitationavg_filename}"
+        f"{config.tmp_file_dir}/{config.import_data.past_precopitationavg.filename}"
     )
 
     return
@@ -97,20 +107,12 @@ def request_weather_forecast(config):
 
 @decorator.set_config
 def upload_weatherforecastfiles_to_gcs(config):
-    """気象庁コード一覧取得
+    """取得し保存した予報CSVファイルをGCSへアップロード
     Args
         config: 設定値
     """
 
-    filenames = [
-        config.fewdays_weather_filename,
-        config.tomorrow_pops_filename,
-        config.tomorrow_temps_filename,
-        config.week_weather_filename,
-        config.week_temps_filename,
-        config.past_tempavg_filename,
-        config.past_precopitationavg_filename,
-    ]
+    filenames = [data.filename for data in config.import_data]
 
     # GCSへ順にアップロード
     for filename in filenames:
@@ -121,16 +123,38 @@ def upload_weatherforecastfiles_to_gcs(config):
         )
     return
 
+
 @decorator.set_config
 def gcsweatherforecastfiles_to_bqtable(config):
+    """GCS上に保存した予報CSVファイルをBQのテーブルへinsert
+    Args
+        config: 設定値
+    """
 
-    file_to_table(
-        project_id=config.project_id,
-        dataset_name=config.import_datasetname,
-        table_name=table_name,
-        table_schema_path=schemapath,
-        source_file_uri: str,
-        replace: bool = False,
-        partition_field: str = None,
-        skip_leading_rows: int = 1,
-    )
+    for data in config.import_data:
+        file_to_table(
+            project_id=config.project_id,
+            dataset_name=config.import_datasetname,
+            table_name=data.import_table_name,
+            table_schema_path=data.table_schema_path,
+            source_file_uri=f"gs://{config.bucket_name}/{config.gcs_import_dir}/{data.filename}",
+            replace=False,
+            partition_field=data.partition_field,
+            skip_leading_rows=data.skip_leading_rows,
+        )
+
+    return
+
+
+@decorator.set_config
+def delete_insertedgcsweatherforecastfiles(config):
+    """BQへinsertされたGCS上の予報CSVファイルを削除
+    Args
+        config: 設定値
+    """
+    for data in config.import_data:
+        delete_blob(
+            bucket_name=config.bucket_name,
+            blob_name=f"{config.gcs_import_dir}/{data.filename}",
+        )
+    return

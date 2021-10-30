@@ -30,7 +30,9 @@ def main(event, context):
     weatherforcastservice.upload_weatherforecastfiles_to_gcs()
 
     # 出力したCSVファイルをBigQueryへinsert
+    weatherforcastservice.gcsweatherforecastfiles_to_bqtable()
 
     # GCSのcsvを削除
+    weatherforcastservice.delete_insertedgcsweatherforecastfiles()
 
     logger.info("finish tenmado-load")
