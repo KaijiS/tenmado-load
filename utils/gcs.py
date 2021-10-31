@@ -118,6 +118,8 @@ def delete_blob(bucket_name, blob_name) -> None:
         blob.delete()
         logger.info("Blob {} deleted.".format(blob_name))
         return
+    else:
+        logger.warning("Blob {} is not exist".format(blob_name))
 
     return
 

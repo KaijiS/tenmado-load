@@ -1,5 +1,6 @@
 from modules.weatherforcast import WeatherForecast
 from utils import gcs
+from utils import bq
 from utils import files
 from utils import jinja2
 from utils import decorator
@@ -132,7 +133,7 @@ def gcsweatherforecastfiles_to_bqtable(config):
     """
 
     for data in config.import_data:
-        file_to_table(
+        bq.file_to_table(
             project_id=config.project_id,
             dataset_name=config.import_datasetname,
             table_name=data.import_table_name,
@@ -147,13 +148,26 @@ def gcsweatherforecastfiles_to_bqtable(config):
 
 
 @decorator.set_config
+def delete_localweatherforecastfiles(config):
+    """リクエスト後ローカルに保存したの予報CSVファイルを削除
+    Args
+        config: 設定値
+    """
+    for data in config.import_data:
+        files.delete_file(
+            filapath=f"{config.tmp_file_dir}/{data.filename}",
+        )
+    return
+
+
+@decorator.set_config
 def delete_insertedgcsweatherforecastfiles(config):
     """BQへinsertされたGCS上の予報CSVファイルを削除
     Args
         config: 設定値
     """
     for data in config.import_data:
-        delete_blob(
+        gcs.delete_blob(
             bucket_name=config.bucket_name,
             blob_name=f"{config.gcs_import_dir}/{data.filename}",
         )

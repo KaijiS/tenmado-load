@@ -23,16 +23,28 @@ def main(event, context):
     pubsub_message = base64.b64decode(event["data"]).decode("utf-8")
     # ただのトリガーなのでpubsumメッセージ内容は無視
 
-    # 全気象台分リクエスト実行しローカルにcsv出力
-    weatherforcastservice.request_weather_forecast()
+    try:
+        # 全気象台分リクエスト実行しローカルにcsv出力
+        weatherforcastservice.request_weather_forecast()
 
-    # 出力したcsvをGCSへアップロード
-    weatherforcastservice.upload_weatherforecastfiles_to_gcs()
+        # 出力したcsvをGCSへアップロード
+        weatherforcastservice.upload_weatherforecastfiles_to_gcs()
 
-    # 出力したCSVファイルをBigQueryへinsert
-    weatherforcastservice.gcsweatherforecastfiles_to_bqtable()
+        # 出力したCSVファイルをBigQueryへinsert
+        weatherforcastservice.gcsweatherforecastfiles_to_bqtable()
 
-    # GCSのcsvを削除
-    weatherforcastservice.delete_insertedgcsweatherforecastfiles()
+        logger.info("finish tenmado-load")
 
-    logger.info("finish tenmado-load")
+    except Exception as e:
+        # TODO GCSのファイルをエラーフォルダにコピーするか相談
+
+        logger.exception("tenmado-load error")
+
+    finally:
+        # ローカルcsvを削除
+        weatherforcastservice.delete_localweatherforecastfiles(config)
+
+        # GCSのcsvを削除
+        weatherforcastservice.delete_insertedgcsweatherforecastfiles()
+
+    return

@@ -3,6 +3,17 @@ import yaml
 from utils import gcs
 import pickle
 
+from logging import getLogger
+from logging import DEBUG
+from logging import StreamHandler
+from logging import Formatter
+
+logger = getLogger(__name__)
+logger.setLevel(DEBUG)
+handler = StreamHandler()
+handler.setLevel(DEBUG)
+logger.addHandler(handler)
+
 
 def read_file(filepath: str) -> str:
     """
@@ -20,6 +31,18 @@ def exists(filepath: str) -> bool:
     """
 
     return os.path.exists(filepath)
+
+
+def delete_file(filapath: str):
+    """
+    ファイルの削除
+    """
+    if exists(filepath):
+        os.remove(filapath)
+        logger.info("local {} deleted".format(filepath))
+    else:
+        logger.warning("local {} not exist".format(filepath))
+    return
 
 
 def read_yaml(filepath: str):
