@@ -1,0 +1,51 @@
+# utils/decorator.pyの set_configで呼び出されセットされる
+
+tmp_file_dir: ".tmp_files"
+
+gcs_import_dir: "import"
+
+import_datasetname: "tenmado_import"
+
+import_data:
+  fewdays_weather:
+    filename: "fewdays_weather.csv"
+    import_table_name: "t_fewdays_weather"
+    table_schema_path: "tableschemas/t_fewdays_weather.json"
+    partition_field: "get_datetime"
+    skip_leading_rows: 1
+  tomorrow_pops:
+    filename: "tomorrow_pops.csv"
+    import_table_name: "t_tomorrow_pops"
+    table_schema_path: "tableschemas/t_tomorrow_pops.json"
+    partition_field: "get_datetime"
+    skip_leading_rows: 1
+  tomorrow_temps:
+    filename: "tomorrow_temps.csv"
+    import_table_name: "t_tomorrow_temps"
+    table_schema_path: "tableschemas/t_tomorrow_temps.json"
+    partition_field: "get_datetime"
+    skip_leading_rows: 1
+  week_weather:
+    filename: "week_weather.csv"
+    import_table_name: "t_week_weather"
+    table_schema_path: "tableschemas/t_week_weather.json"
+    partition_field: "get_datetime"
+    skip_leading_rows: 1
+  week_temps:
+    filename: "week_temps.csv"
+    import_table_name: "t_week_temps"
+    table_schema_path: "tableschemas/t_week_temps.json"
+    partition_field: "get_datetime"
+    skip_leading_rows: 1
+  past_tempavg:
+    filename: "past_tempavg.csv"
+    import_table_name: "t_past_tempavg"
+    table_schema_path: "tableschemas/t_past_tempavg.json"
+    partition_field: "get_datetime"
+    skip_leading_rows: 1
+  past_precopitationavg:
+    filename: "past_precopitationavg.csv"
+    import_table_name: "t_past_precopitationavg"
+    table_schema_path: "tableschemas/t_past_precopitationavg.json"
+    partition_field: "get_datetime"
+    skip_leading_rows: 1
