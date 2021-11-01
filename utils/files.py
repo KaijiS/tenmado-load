@@ -62,8 +62,8 @@ def read_csvfile(
     local_dir: str,
     bucket_name: Optional[str] = None,
     gcs_filename_prefix: Optional[str] = None,
-    usecols: Optional[List[str]] = None,
-    dtype: Optional[Dict[str, str]] = None,
+    usecols: Optional[list[str]] = None,
+    dtype: Optional[dict[str, str]] = None,
 ):
     """
     CSVファイルを読み込みDataFrameにする
