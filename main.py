@@ -42,7 +42,7 @@ def main(event, context):
 
     finally:
         # ローカルcsvを削除
-        weatherforcastservice.delete_localweatherforecastfiles(config)
+        weatherforcastservice.delete_localweatherforecastfiles()
 
         # GCSのcsvを削除
         weatherforcastservice.delete_insertedgcsweatherforecastfiles()
