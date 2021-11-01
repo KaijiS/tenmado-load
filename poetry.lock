@@ -109,6 +109,31 @@ pyopenssl = ["pyopenssl (>=20.0.0)"]
 reauth = ["pyu2f (>=0.1.5)"]
 
 [[package]]
+name = "google-cloud-appengine-logging"
+version = "0.2.0"
+description = ""
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+google-api-core = {version = ">=1.22.2,<3.0.0dev", extras = ["grpc"]}
+packaging = ">=14.3"
+proto-plus = ">=1.15.0"
+
+[[package]]
+name = "google-cloud-audit-log"
+version = "0.2.0"
+description = "Google Cloud Audit Protos"
+category = "main"
+optional = false
+python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*"
+
+[package.dependencies]
+googleapis-common-protos = ">=1.52.0"
+protobuf = ">=3.6.0"
+
+[[package]]
 name = "google-cloud-bigquery"
 version = "2.29.0"
 description = "Google BigQuery API client library"
@@ -150,6 +175,22 @@ google-auth = ">=1.24.0,<3.0dev"
 
 [package.extras]
 grpc = ["grpcio (>=1.8.2,<2.0dev)"]
+
+[[package]]
+name = "google-cloud-logging"
+version = "2.6.0"
+description = "Stackdriver Logging API client library"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+google-api-core = {version = ">=1.26.0,<3.0.0dev", extras = ["grpc"]}
+google-cloud-appengine-logging = ">=0.1.0,<1.0.0dev"
+google-cloud-audit-log = ">=0.1.0,<1.0.0dev"
+google-cloud-core = ">=1.4.1,<3.0.0dev"
+packaging = ">=14.3"
+proto-plus = ">=1.11.0"
 
 [[package]]
 name = "google-cloud-storage"
@@ -477,7 +518,7 @@ socks = ["PySocks (>=1.5.6,<1.5.7 || >1.5.7,<2.0)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "3.9.4"
-content-hash = "90f739dd879058e5c0c971f3e20c45404b70c82f3eb4fa45c2aece52fd1cc10a"
+content-hash = "b0ab98adc3d591367e6f96bd0db71a0ffed60ece9c86146cc857e10b21f8143c"
 
 [metadata.files]
 black = [
@@ -512,6 +553,14 @@ google-auth = [
     {file = "google-auth-2.3.2.tar.gz", hash = "sha256:2dc5218ee1192f9d67147cece18f47a929a9ef746cb69c50ab5ff5cfc983647b"},
     {file = "google_auth-2.3.2-py2.py3-none-any.whl", hash = "sha256:6e99f4b3b099feb50de20302f2f8987c1c36e80a3f856ce852675bdf7a0935d3"},
 ]
+google-cloud-appengine-logging = [
+    {file = "google-cloud-appengine-logging-0.2.0.tar.gz", hash = "sha256:cf6b9291168aa6540e5d2ca3eb017a0afdb3f80b80b47d3864d0747039f7d296"},
+    {file = "google_cloud_appengine_logging-0.2.0-py2.py3-none-any.whl", hash = "sha256:61e7d496db659f645881d863cda05c5d483006bad4f9a7aab8ba7b60ec1efbec"},
+]
+google-cloud-audit-log = [
+    {file = "google-cloud-audit-log-0.2.0.tar.gz", hash = "sha256:d0852f525ad65705f9fbff6288be4493e1449a7906fb5e01bd71c8d1e424d1fc"},
+    {file = "google_cloud_audit_log-0.2.0-py2.py3-none-any.whl", hash = "sha256:ecc7f5f2168ad4014331d6397fcea3750b2d41900f0ef6d1081cd78b3a6420e9"},
+]
 google-cloud-bigquery = [
     {file = "google-cloud-bigquery-2.29.0.tar.gz", hash = "sha256:aab082a2e741cc976b729192ec299d348f045320cee9b2d09fd6a18376087cb7"},
     {file = "google_cloud_bigquery-2.29.0-py2.py3-none-any.whl", hash = "sha256:9bf0a192af28132765a394dcf655e62bf7a1a146580d5b574b56119bbf2a8f83"},
@@ -519,6 +568,10 @@ google-cloud-bigquery = [
 google-cloud-core = [
     {file = "google-cloud-core-2.1.0.tar.gz", hash = "sha256:35a1f5f02a86e0fa2e28c669f0db4a76d928671a28fbbbb493ab59ba9d1cb9a9"},
     {file = "google_cloud_core-2.1.0-py2.py3-none-any.whl", hash = "sha256:8d5fed11731dae8bc8656a2c9fa8ff17bdfdfd083cba97569324e35b94e7e002"},
+]
+google-cloud-logging = [
+    {file = "google-cloud-logging-2.6.0.tar.gz", hash = "sha256:499eed5f13cab805c8780b0d14a0d931a9ff1d65efccdd9e68772d40e7dad4c5"},
+    {file = "google_cloud_logging-2.6.0-py2.py3-none-any.whl", hash = "sha256:abf404c2823d4fdff5e86cd869d77e6fda8d40096cbab897bc78a11f59096a3c"},
 ]
 google-cloud-storage = [
     {file = "google-cloud-storage-1.42.3.tar.gz", hash = "sha256:7754d4dcaa45975514b404ece0da2bb4292acbc67ca559a69e12a19d54fcdb06"},
