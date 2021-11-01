@@ -1,7 +1,10 @@
 import os
-import yaml
-from utils import gcs
 import pickle
+from typing import Optional
+
+import yaml
+
+from utils import gcs
 
 from logging import getLogger
 from logging import DEBUG
