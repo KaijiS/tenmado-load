@@ -1,5 +1,4 @@
 from google.cloud import bigquery
-from google.cloud import bigquery_storage
 from google.cloud.exceptions import NotFound
 from logging import getLogger
 from logging import DEBUG
