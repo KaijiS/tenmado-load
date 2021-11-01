@@ -44,7 +44,7 @@ def request_weather_forecast(config):
 
     # 気象庁コード一覧取得
     meteorological_observatory_codes = fetch_meteorological_observatory_codes(
-        project_id=config.project_id
+        project_id=config["project_id"]
     )
 
     # 各DFを結合するためのリストを準備
@@ -82,25 +82,25 @@ def request_weather_forecast(config):
 
     # ファイル出力
     fewdays_weather_df.to_csv(
-        f"{config.tmp_file_dir}/{config.import_data.fewdays_weather.filename}"
+        f"{config['tmp_file_dir']}/{config['import_data']['fewdays_weather']['filename']}"
     )
     tomorrow_pops_df.to_csv(
-        f"{config.tmp_file_dir}/{config.import_data.tomorrow_pops.filename}"
+        f"{config['tmp_file_dir']}/{config['import_data']['tomorrow_pops']['filename']}"
     )
     tomorrow_temps_df.to_csv(
-        f"{config.tmp_file_dir}/{config.import_data.tomorrow_temps.filename}"
+        f"{config['tmp_file_dir']}/{config['import_data']['tomorrow_temps']['filename']}"
     )
     week_weather_df.to_csv(
-        f"{config.tmp_file_dir}/{config.import_data.week_weather.filename}"
+        f"{config['tmp_file_dir']}/{config['import_data']['week_weather']['filename']}"
     )
     week_temps_df.to_csv(
-        f"{config.tmp_file_dir}/{config.import_data.week_temps.filename}"
+        f"{config['tmp_file_dir']}/{config['import_data']['week_temps']['filename']}"
     )
     past_tempavg_df.to_csv(
-        f"{config.tmp_file_dir}/{config.import_data.past_tempavg.filename}"
+        f"{config['tmp_file_dir']}/{config['import_data']['past_tempavg']['filename']}"
     )
     past_precopitationavg_df.to_csv(
-        f"{config.tmp_file_dir}/{config.import_data.past_precopitationavg.filename}"
+        f"{config['tmp_file_dir']}/{config['import_data']['past_precopitationavg']['filename']}"
     )
 
     return
@@ -113,14 +113,14 @@ def upload_weatherforecastfiles_to_gcs(config):
         config: 設定値
     """
 
-    filenames = [data.filename for data in config.import_data]
+    filenames = [data["filename"] for data in config["import_data"]]
 
     # GCSへ順にアップロード
     for filename in filenames:
         gcs.to_gcs(
-            bucket_name=config.bucket_name,
-            filepath=f"{config.gcs_import_dir}/{filename}",
-            upload_path=f"{config.tmp_file_dir}/{filename}",
+            bucket_name=config["bucket_name"],
+            filepath=f"{config['gcs_import_dir']}/{filename}",
+            upload_path=f"{config['tmp_file_dir']}/{filename}",
         )
     return
 
@@ -132,16 +132,16 @@ def gcsweatherforecastfiles_to_bqtable(config):
         config: 設定値
     """
 
-    for data in config.import_data:
+    for data in config["import_data"]:
         bq.file_to_table(
-            project_id=config.project_id,
-            dataset_name=config.import_datasetname,
-            table_name=data.import_table_name,
-            table_schema_path=data.table_schema_path,
-            source_file_uri=f"gs://{config.bucket_name}/{config.gcs_import_dir}/{data.filename}",
+            project_id=config["project_id"],
+            dataset_name=config["import_datasetname"],
+            table_name=data["import_table_name"],
+            table_schema_path=data["table_schema_path"],
+            source_file_uri=f"gs://{config['bucket_name']}/{config['gcs_import_dir']}/{data['filename']}",
             replace=False,
-            partition_field=data.partition_field,
-            skip_leading_rows=data.skip_leading_rows,
+            partition_field=data["partition_field"],
+            skip_leading_rows=data["skip_leading_rows"],
         )
 
     return
@@ -153,9 +153,9 @@ def delete_localweatherforecastfiles(config):
     Args
         config: 設定値
     """
-    for data in config.import_data:
+    for data in config["import_data"]:
         files.delete_file(
-            filapath=f"{config.tmp_file_dir}/{data.filename}",
+            filapath=f"{config['tmp_file_dir']}/{data['filename']}",
         )
     return
 
@@ -166,9 +166,9 @@ def delete_insertedgcsweatherforecastfiles(config):
     Args
         config: 設定値
     """
-    for data in config.import_data:
+    for data in config["import_data"]:
         gcs.delete_blob(
-            bucket_name=config.bucket_name,
-            blob_name=f"{config.gcs_import_dir}/{data.filename}",
+            bucket_name=config["bucket_name"],
+            blob_name=f"{config['gcs_import_dir']}/{data['filename']}",
         )
     return
