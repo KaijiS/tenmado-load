@@ -163,7 +163,7 @@ class WeatherForecast:
                 weather_codes += area["weatherCodes"][1:]
                 weathers += area["weathers"][1:]
                 winds += area["winds"][1:]
-                waves += area["waves"][1:]
+                waves += area.get("waves", [np.nan] * (len(datetimes) + 1))[1:]
             except Exception as e:
                 logger.exception(f"area is {area}")
 
