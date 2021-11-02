@@ -27,7 +27,7 @@ def fetch_meteorological_observatory_codes(project_id: str):
         query_base=query_base, params={"project_id": project_id}
     )
 
-    result = exe_query(query)
+    result = bq.exe_query(query)
     meteorological_observatory_codes = [
         row.meteorological_observatory_code for row in results
     ]
@@ -113,7 +113,7 @@ def upload_weatherforecastfiles_to_gcs(config):
         config: 設定値
     """
 
-    filenames = [data["filename"] for data in config["import_data"]]
+    filenames = [data["filename"] for data in config["import_data"].values()]
 
     # GCSへ順にアップロード
     for filename in filenames:
@@ -132,7 +132,7 @@ def gcsweatherforecastfiles_to_bqtable(config):
         config: 設定値
     """
 
-    for data in config["import_data"]:
+    for data in config["import_data"].values():
         bq.file_to_table(
             project_id=config["project_id"],
             dataset_name=config["import_datasetname"],
@@ -153,7 +153,7 @@ def delete_localweatherforecastfiles(config):
     Args
         config: 設定値
     """
-    for data in config["import_data"]:
+    for data in config["import_data"].values():
         files.delete_file(
             filapath=f"{config['tmp_file_dir']}/{data['filename']}",
         )
