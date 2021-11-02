@@ -6,6 +6,17 @@ import pandas as pd
 
 from typing import Any
 
+from logging import getLogger
+from logging import DEBUG
+from logging import StreamHandler
+from logging import Formatter
+
+logger = getLogger(__name__)
+logger.setLevel(DEBUG)
+handler = StreamHandler()
+handler.setLevel(DEBUG)
+logger.addHandler(handler)
+
 
 class WeatherForecast:
     def __init__(self, area_code):
@@ -145,13 +156,16 @@ class WeatherForecast:
         areas = fewdays_weather_dict["areas"]
 
         for area in areas:
-            area_codes += [area["area"]["code"]] * len(datetimes)
-            area_names += [area["area"]["name"]] * len(datetimes)
-            forecast_target_dates += datetimes
-            weather_codes += area["weatherCodes"][1:]
-            weathers += area["weathers"][1:]
-            winds += area["winds"][1:]
-            waves += area["waves"][1:]
+            try:
+                area_codes += [area["area"]["code"]] * len(datetimes)
+                area_names += [area["area"]["name"]] * len(datetimes)
+                forecast_target_dates += datetimes
+                weather_codes += area["weatherCodes"][1:]
+                weathers += area["weathers"][1:]
+                winds += area["winds"][1:]
+                waves += area["waves"][1:]
+            except Exception as e:
+                logger.exception(f"area is {area}")
 
         fewdays_weather_df = pd.DataFrame(
             {
@@ -226,13 +240,16 @@ class WeatherForecast:
         areas = tomorrow_pops_dict["areas"]
 
         for area in areas:
-            area_codes += [area["area"]["code"]]
-            area_names += [area["area"]["name"]]
-            forecast_target_dates += [datetimes]
-            pops0006 += [area["pops"][1]]
-            pops0612 += [area["pops"][2]]
-            pops1218 += [area["pops"][3]]
-            pops1824 += [area["pops"][4]]
+            try:
+                area_codes += [area["area"]["code"]]
+                area_names += [area["area"]["name"]]
+                forecast_target_dates += [datetimes]
+                pops0006 += [area["pops"][1]]
+                pops0612 += [area["pops"][2]]
+                pops1218 += [area["pops"][3]]
+                pops1824 += [area["pops"][4]]
+            except Exception as e:
+                logger.exception(f"area is {area}")
 
         tomorrow_pops_df = pd.DataFrame(
             {
@@ -302,11 +319,14 @@ class WeatherForecast:
         areas = tomorrow_temps_dict["areas"]
 
         for area in areas:
-            city_codes += [area["area"]["code"]]
-            city_names += [area["area"]["name"]]
-            forecast_target_dates += [datetimes]
-            lowest_temperatures += [area["temps"][0]]
-            highest_temperatures += [area["temps"][1]]
+            try:
+                city_codes += [area["area"]["code"]]
+                city_names += [area["area"]["name"]]
+                forecast_target_dates += [datetimes]
+                lowest_temperatures += [area["temps"][0]]
+                highest_temperatures += [area["temps"][1]]
+            except Exception as e:
+                logger.exception(f"area is {area}")
 
         tomorrow_temps_df = pd.DataFrame(
             {
@@ -368,15 +388,20 @@ class WeatherForecast:
         areas = week_weather_dict["areas"]
 
         for area in areas:
-            area_codes += [area["area"]["code"]] * len(datetimes)
-            area_names += [area["area"]["name"]] * len(datetimes)
-            forecast_target_dates += datetimes
-            # 天気コード
-            weather_codes += area["weatherCodes"]
-            # 降水確率
-            pops += [i if i != "" else np.nan for i in area["pops"]]
-            # 信頼度
-            reliabilities += [i if i != "" else np.nan for i in area["reliabilities"]]
+            try:
+                area_codes += [area["area"]["code"]] * len(datetimes)
+                area_names += [area["area"]["name"]] * len(datetimes)
+                forecast_target_dates += datetimes
+                # 天気コード
+                weather_codes += area["weatherCodes"]
+                # 降水確率
+                pops += [i if i != "" else np.nan for i in area["pops"]]
+                # 信頼度
+                reliabilities += [
+                    i if i != "" else np.nan for i in area["reliabilities"]
+                ]
+            except Exception as e:
+                logger.exception(f"area is {area}")
 
         week_weather_df = pd.DataFrame(
             {
@@ -443,25 +468,32 @@ class WeatherForecast:
 
         for city in cities:
 
-            city_codes += [city["area"]["code"]] * len(datetimes)
-            city_names += [city["area"]["name"]] * len(datetimes)
-            forecast_target_dates += datetimes
-            # 最低気温
-            lowest_temperatures += [i if i != "" else np.nan for i in city["tempsMin"]]
-            lowest_temperature_uppers += [
-                i if i != "" else np.nan for i in city["tempsMinUpper"]
-            ]
-            lowest_temperature_lowers += [
-                i if i != "" else np.nan for i in city["tempsMinLower"]
-            ]
-            # 最高気温
-            highest_temperatures += [i if i != "" else np.nan for i in city["tempsMax"]]
-            highest_temperature_uppers += [
-                i if i != "" else np.nan for i in city["tempsMaxUpper"]
-            ]
-            highest_temperature_lowers += [
-                i if i != "" else np.nan for i in city["tempsMaxLower"]
-            ]
+            try:
+                city_codes += [city["area"]["code"]] * len(datetimes)
+                city_names += [city["area"]["name"]] * len(datetimes)
+                forecast_target_dates += datetimes
+                # 最低気温
+                lowest_temperatures += [
+                    i if i != "" else np.nan for i in city["tempsMin"]
+                ]
+                lowest_temperature_uppers += [
+                    i if i != "" else np.nan for i in city["tempsMinUpper"]
+                ]
+                lowest_temperature_lowers += [
+                    i if i != "" else np.nan for i in city["tempsMinLower"]
+                ]
+                # 最高気温
+                highest_temperatures += [
+                    i if i != "" else np.nan for i in city["tempsMax"]
+                ]
+                highest_temperature_uppers += [
+                    i if i != "" else np.nan for i in city["tempsMaxUpper"]
+                ]
+                highest_temperature_lowers += [
+                    i if i != "" else np.nan for i in city["tempsMaxLower"]
+                ]
+            except Exception as e:
+                logger.exception(f"city is {city}")
 
         week_temps_df = pd.DataFrame(
             {
@@ -526,13 +558,15 @@ class WeatherForecast:
         cities = past_tempavg_dict["areas"]
 
         for city in cities:
-
-            city_codes += [city["area"]["code"]]
-            city_names += [city["area"]["name"]]
-            # 最低気温
-            lowest_temperatures += [city["min"]]
-            # 最高気温
-            highest_temperatures += [city["max"]]
+            try:
+                city_codes += [city["area"]["code"]]
+                city_names += [city["area"]["name"]]
+                # 最低気温
+                lowest_temperatures += [city["min"]]
+                # 最高気温
+                highest_temperatures += [city["max"]]
+            except Exception as e:
+                logger.exception(f"city is {city}")
 
         past_tempavg_df = pd.DataFrame(
             {
@@ -587,13 +621,15 @@ class WeatherForecast:
         cities = past_precipitationavg_dict["areas"]
 
         for city in cities:
-
-            city_codes += [city["area"]["code"]]
-            city_names += [city["area"]["name"]]
-            # 最低気温
-            precopitation_mins += [city["min"]]
-            # 最高気温
-            precopitation_maxs += [city["max"]]
+            try:
+                city_codes += [city["area"]["code"]]
+                city_names += [city["area"]["name"]]
+                # 最低気温
+                precopitation_mins += [city["min"]]
+                # 最高気温
+                precopitation_maxs += [city["max"]]
+            except Exception as e:
+                logger.exception(f"city is {city}")
 
         past_precopitationavg_df = pd.DataFrame(
             {
