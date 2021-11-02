@@ -27,7 +27,7 @@ def fetch_meteorological_observatory_codes(project_id: str):
         query_base=query_base, params={"project_id": project_id}
     )
 
-    result = bq.exe_query(query)
+    results = bq.exe_query(query)
     meteorological_observatory_codes = [
         row.meteorological_observatory_code for row in results
     ]

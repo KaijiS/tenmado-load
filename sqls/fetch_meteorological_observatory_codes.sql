@@ -2,7 +2,7 @@
 
 select
     meteorological_observatory_code
-from `{{project_id}}.tenmado_setting.m_fetch_meteorologicalobservatory`
+from `{{project_id}}.tenmado_setting.m_meteorologicalobservatory`
 order by
     meteorological_observatory_code
 ;

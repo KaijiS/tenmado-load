@@ -36,12 +36,12 @@ def exists(filepath: str) -> bool:
     return os.path.exists(filepath)
 
 
-def delete_file(filapath: str):
+def delete_file(filepath: str):
     """
     ファイルの削除
     """
     if exists(filepath):
-        os.remove(filapath)
+        os.remove(filepath)
         logger.info("local {} deleted".format(filepath))
     else:
         logger.warning("local {} not exist".format(filepath))
