@@ -50,7 +50,7 @@ def request_weather_forecast(config):
     # 各DFを結合するためのリストを準備
     fewdays_weather_dfs: list[pd.DataFrame] = []
     tomorrow_pops_dfs: list[pd.DataFrame] = []
-    tomorrow_temps_df: list[pd.DataFrame] = []
+    tomorrow_temps_dfs: list[pd.DataFrame] = []
     week_weather_dfs: list[pd.DataFrame] = []
     week_temps_dfs: list[pd.DataFrame] = []
     past_tempavg_dfs: list[pd.DataFrame] = []
@@ -155,7 +155,7 @@ def delete_localweatherforecastfiles(config):
     """
     for data in config["import_data"].values():
         files.delete_file(
-            filapath=f"{config['tmp_file_dir']}/{data['filename']}",
+            filepath=f"{config['tmp_file_dir']}/{data['filename']}",
         )
     return
 
