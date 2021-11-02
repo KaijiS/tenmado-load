@@ -166,7 +166,7 @@ def delete_insertedgcsweatherforecastfiles(config):
     Args
         config: 設定値
     """
-    for data in config["import_data"]:
+    for data in config["import_data"].values():
         gcs.delete_blob(
             bucket_name=config["bucket_name"],
             blob_name=f"{config['gcs_import_dir']}/{data['filename']}",
