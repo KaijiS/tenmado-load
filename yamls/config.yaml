@@ -1,6 +1,6 @@
 # utils/decorator.pyの set_configで呼び出されセットされる
 
-tmp_file_dir: "tmp"
+tmp_file_dir: "/tmp"
 
 gcs_import_dir: "import"
 
