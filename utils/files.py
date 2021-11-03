@@ -112,8 +112,8 @@ def to_csvfile(
     if bucket_name is not None:
         gcs.to_gcs(
             bucket_name=bucket_name,
-            filepath=gcs_filename_prefix + filename,
-            upload_path=local_dir + filename,
+            filepath=gcs_filename_prefix + "/" + filename,
+            upload_path=local_dir + "/" + filename,
         )
     return
 
