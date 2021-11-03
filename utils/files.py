@@ -107,7 +107,7 @@ def to_csvfile(
         gcs_filename_prefix: Optional[str]: GCSのアップロード先のprefix(ファイル名直前まで)
         index: bool: DataFrameのindexも列として書き出すか
     """
-    df.to_csv(local_dir + filename, index=index)
+    df.to_csv(local_dir + "/" + filename, index=index)
 
     if bucket_name is not None:
         gcs.to_gcs(

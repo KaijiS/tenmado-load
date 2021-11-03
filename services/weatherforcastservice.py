@@ -39,7 +39,7 @@ def fetch_meteorological_observatory_codes(project_id: str):
 
 @decorator.set_config
 def request_weather_forecast(config):
-    """予報をリクエストしcsvファイル出力
+    """予報をリクエストしcsvファイル出力しGCSへアップロード
     Args
         config: 設定値
     """
@@ -82,48 +82,64 @@ def request_weather_forecast(config):
     past_tempavg_df = pd.concat(past_tempavg_dfs)
     past_precopitationavg_df = pd.concat(past_precopitationavg_dfs)
 
-    # ファイル出力
-    fewdays_weather_df.to_csv(
-        f"{config['tmp_file_dir']}/{config['import_data']['fewdays_weather']['filename']}"
+    # ファイル出力し GCSへアップロード
+    files.to_csvfile(
+        df=fewdays_weather_df,
+        filename=config["import_data"]["fewdays_weather"]["filename"],
+        local_dir=config["tmp_file_dir"],
+        bucket_name=config["bucket_name"],
+        gcs_filename_prefix=config["gcs_import_dir"],
+        index=False,
     )
-    tomorrow_pops_df.to_csv(
-        f"{config['tmp_file_dir']}/{config['import_data']['tomorrow_pops']['filename']}"
+    files.to_csvfile(
+        df=tomorrow_pops_df,
+        filename=config["import_data"]["tomorrow_pops"]["filename"],
+        local_dir=config["tmp_file_dir"],
+        bucket_name=config["bucket_name"],
+        gcs_filename_prefix=config["gcs_import_dir"],
+        index=False,
     )
-    tomorrow_temps_df.to_csv(
-        f"{config['tmp_file_dir']}/{config['import_data']['tomorrow_temps']['filename']}"
+    files.to_csvfile(
+        df=tomorrow_temps_df,
+        filename=config["import_data"]["tomorrow_temps"]["filename"],
+        local_dir=config["tmp_file_dir"],
+        bucket_name=config["bucket_name"],
+        gcs_filename_prefix=config["gcs_import_dir"],
+        index=False,
     )
-    week_weather_df.to_csv(
-        f"{config['tmp_file_dir']}/{config['import_data']['week_weather']['filename']}"
+    files.to_csvfile(
+        df=week_weather_df,
+        filename=config["import_data"]["week_weather"]["filename"],
+        local_dir=config["tmp_file_dir"],
+        bucket_name=config["bucket_name"],
+        gcs_filename_prefix=config["gcs_import_dir"],
+        index=False,
     )
-    week_temps_df.to_csv(
-        f"{config['tmp_file_dir']}/{config['import_data']['week_temps']['filename']}"
+    files.to_csvfile(
+        df=week_temps_df,
+        filename=config["import_data"]["week_temps"]["filename"],
+        local_dir=config["tmp_file_dir"],
+        bucket_name=config["bucket_name"],
+        gcs_filename_prefix=config["gcs_import_dir"],
+        index=False,
     )
-    past_tempavg_df.to_csv(
-        f"{config['tmp_file_dir']}/{config['import_data']['past_tempavg']['filename']}"
+    files.to_csvfile(
+        df=past_tempavg_df,
+        filename=config["import_data"]["past_tempavg"]["filename"],
+        local_dir=config["tmp_file_dir"],
+        bucket_name=config["bucket_name"],
+        gcs_filename_prefix=config["gcs_import_dir"],
+        index=False,
     )
-    past_precopitationavg_df.to_csv(
-        f"{config['tmp_file_dir']}/{config['import_data']['past_precopitationavg']['filename']}"
+    files.to_csvfile(
+        df=past_precopitationavg_df,
+        filename=config["import_data"]["past_precopitationavg"]["filename"],
+        local_dir=config["tmp_file_dir"],
+        bucket_name=config["bucket_name"],
+        gcs_filename_prefix=config["gcs_import_dir"],
+        index=False,
     )
 
-    return
-
-
-@decorator.set_config
-def upload_weatherforecastfiles_to_gcs(config):
-    """取得し保存した予報CSVファイルをGCSへアップロード
-    Args
-        config: 設定値
-    """
-
-    filenames = [data["filename"] for data in config["import_data"].values()]
-
-    # GCSへ順にアップロード
-    for filename in filenames:
-        gcs.to_gcs(
-            bucket_name=config["bucket_name"],
-            filepath=f"{config['gcs_import_dir']}/{filename}",
-            upload_path=f"{config['tmp_file_dir']}/{filename}",
-        )
     return
 
 

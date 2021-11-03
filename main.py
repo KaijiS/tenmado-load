@@ -24,11 +24,8 @@ def main(event, context):
     # ただのトリガーなのでpubsumメッセージ内容は無視
 
     try:
-        # 全気象台分リクエスト実行しローカルにcsv出力
+        # 全気象台分リクエスト実行しローカルにcsv出力→ GCSアップロード
         weatherforcastservice.request_weather_forecast()
-
-        # 出力したcsvをGCSへアップロード
-        weatherforcastservice.upload_weatherforecastfiles_to_gcs()
 
         # 出力したCSVファイルをBigQueryへinsert
         weatherforcastservice.gcsweatherforecastfiles_to_bqtable()
