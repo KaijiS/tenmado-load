@@ -58,9 +58,9 @@ class WeatherForecast:
         # 明日明後日分の情報([0])を取得
         fewdays_forecast_response_dict = self.response_dict[0]
         # 気象情報レポート日時
-        report_datetime: datetime.date = fewdays_forecast_response_dict[
-            "reportDatetime"
-        ]
+        report_datetime: str = datetime.datetime.strptime(
+            fewdays_forecast_response_dict["reportDatetime"], "%Y-%m-%dT%H:%M:%S%z"
+        ).strftime("%Y-%m-%d %H:%M:%S")
         # 気象台名
         meteorological_observatory_name = fewdays_forecast_response_dict[
             "publishingOffice"
@@ -140,7 +140,7 @@ class WeatherForecast:
         # 地方名
         area_names: list[str] = []
         # 予報対象日
-        forecast_target_dates: list[datetime.date] = []
+        forecast_target_dates: list[str] = []
         # 天気コード
         weather_codes: list[str] = []
         # 天気
@@ -187,6 +187,10 @@ class WeatherForecast:
         fewdays_weather_df[
             "meteorological_observatory_name"
         ] = meteorological_observatory_name
+
+        fewdays_weather_df["forecast_target_date"] = pd.to_datetime(
+            fewdays_weather_df["forecast_target_date"]
+        ).dt.strftime("%Y-%m-%d")
 
         # 列並び替え
         self.fewdays_weather_df = fewdays_weather_df[
@@ -272,6 +276,10 @@ class WeatherForecast:
             "meteorological_observatory_name"
         ] = meteorological_observatory_name
 
+        tomorrow_pops_df["forecast_target_date"] = pd.to_datetime(
+            tomorrow_pops_df["forecast_target_date"]
+        ).dt.strftime("%Y-%m-%d")
+
         # 列並び替え
         self.tomorrow_pops_df = tomorrow_pops_df[
             [
@@ -346,6 +354,10 @@ class WeatherForecast:
         tomorrow_temps_df[
             "meteorological_observatory_name"
         ] = meteorological_observatory_name
+
+        tomorrow_temps_df["forecast_target_date"] = pd.to_datetime(
+            tomorrow_temps_df["forecast_target_date"]
+        ).dt.strftime("%Y-%m-%d")
 
         self.tomorrow_temps_df = tomorrow_temps_df[
             [
@@ -422,6 +434,10 @@ class WeatherForecast:
         week_weather_df[
             "meteorological_observatory_name"
         ] = meteorological_observatory_name
+
+        week_weather_df["forecast_target_date"] = pd.to_datetime(
+            week_weather_df["forecast_target_date"]
+        ).dt.strftime("%Y-%m-%d")
 
         self.week_weather_df = week_weather_df[
             [
@@ -517,6 +533,10 @@ class WeatherForecast:
         week_temps_df[
             "meteorological_observatory_name"
         ] = meteorological_observatory_name
+
+        week_temps_df["forecast_target_date"] = pd.to_datetime(
+            week_temps_df["forecast_target_date"]
+        ).dt.strftime("%Y-%m-%d")
 
         self.week_temps_df = week_temps_df[
             [
