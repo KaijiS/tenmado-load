@@ -1,3 +1,5 @@
+import pandas as pd
+
 from modules.weatherforcast import WeatherForecast
 from utils import gcs
 from utils import bq
