@@ -4,6 +4,8 @@ tmp_file_dir: "/tmp"
 
 gcs_import_dir: "import"
 
+gcs_error_dir: "error"
+
 import_datasetname: "tenmado_import"
 
 import_data:

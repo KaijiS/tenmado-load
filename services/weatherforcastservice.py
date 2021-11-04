@@ -1,3 +1,5 @@
+import datetime
+
 import pandas as pd
 
 from modules.weatherforcast import WeatherForecast
@@ -150,17 +152,31 @@ def gcsweatherforecastfiles_to_bqtable(config):
         config: 設定値
     """
 
+    # エラーディレクトリ用タイムスタンプを準備
+    now = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9)))
+    now_str = now.strftime("%Y%m%d%H%M%S")
+
     for data in config["import_data"].values():
-        bq.file_to_table(
-            project_id=config["project_id"],
-            dataset_name=config["import_datasetname"],
-            table_name=data["import_table_name"],
-            table_schema_path=data["table_schema_path"],
-            source_file_uri=f"gs://{config['bucket_name']}/{config['gcs_import_dir']}/{data['filename']}",
-            replace=False,
-            partition_field=data["partition_field"],
-            skip_leading_rows=data["skip_leading_rows"],
-        )
+
+        try:
+            bq.file_to_table(
+                project_id=config["project_id"],
+                dataset_name=config["import_datasetname"],
+                table_name=data["import_table_name"],
+                table_schema_path=data["table_schema_path"],
+                source_file_uri=f"gs://{config['bucket_name']}/{config['gcs_import_dir']}/{data['filename']}",
+                replace=False,
+                partition_field=data["partition_field"],
+                skip_leading_rows=data["skip_leading_rows"],
+            )
+        except:
+            gcs.copy_blob(
+                bucket_name=config["bucket_name"],
+                blob_name=f"{config['gcs_import_dir']}/{data['filename']}",
+                destination_bucket_name=config["bucket_name"],
+                destination_blob_name=f"{config['gcs_error_dir']}/{now_str}/{data['filename']}",
+            )
+            logger.error(f"Import Error: {data['filename']} to BigQuery Table")
 
     return
 

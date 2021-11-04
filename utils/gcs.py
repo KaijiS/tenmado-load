@@ -63,6 +63,38 @@ def rename_blob(bucket_name: str, blob_name: str, new_name: str) -> None:
     return
 
 
+def copy_blob(
+    bucket_name: str,
+    blob_name: str,
+    destination_bucket_name: str,
+    destination_blob_name,
+):
+    # bucket_name = "your-bucket-name"
+    # blob_name = "your-object-name"
+    # destination_bucket_name = "destination-bucket-name"
+    # destination_blob_name = "destination-object-name"
+
+    storage_client = storage.Client()
+
+    source_bucket = storage_client.bucket(bucket_name)
+    source_blob = source_bucket.blob(blob_name)
+    destination_bucket = storage_client.bucket(destination_bucket_name)
+
+    blob_copy = source_bucket.copy_blob(
+        source_blob, destination_bucket, destination_blob_name
+    )
+
+    logger.info(
+        "Blob {} in bucket {} copied to blob {} in bucket {}.".format(
+            source_blob.name,
+            source_bucket.name,
+            blob_copy.name,
+            destination_bucket.name,
+        )
+    )
+    return
+
+
 def mv_blob(
     bucket_name: str,
     blob_name: str,
