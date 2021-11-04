@@ -25,11 +25,6 @@
         "type": "STRING"
     },
     {
-        "description": "予報日",
-        "name": "forecast_target_date",
-        "type": "DATE"
-    },
-    {
         "description": "最低気温",
         "name": "lowest_temperature",
         "type": "FLOAT"

@@ -30,11 +30,6 @@
         "type": "DATE"
     },
     {
-        "description": "天気",
-        "name": "weather",
-        "type": "STRING"
-    },
-    {
         "description": "降水確率0-6",
         "name": "pops0006",
         "type": "FLOAT"

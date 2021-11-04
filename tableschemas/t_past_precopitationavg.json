@@ -25,11 +25,6 @@
         "type": "STRING"
     },
     {
-        "description": "予報日",
-        "name": "forecast_target_date",
-        "type": "DATE"
-    },
-    {
         "description": "降水量下限",
         "name": "precopitation_min",
         "type": "FLOAT"
