@@ -6,16 +6,7 @@ import pandas as pd
 
 from typing import Any
 
-from logging import getLogger
-from logging import DEBUG
-from logging import StreamHandler
-from logging import Formatter
-
-logger = getLogger(__name__)
-logger.setLevel(DEBUG)
-handler = StreamHandler()
-handler.setLevel(DEBUG)
-logger.addHandler(handler)
+from utils.logger import cloud_logger
 
 
 class WeatherForecast:
@@ -24,7 +15,7 @@ class WeatherForecast:
         """
         フィールド変数
         self.area_code: str
-        self.get_datetime: datetime.datetime
+        self.get_datetime: str
         self.response_dict: dict[str, Any]
         self.fewdays_weather_df: pd.DataFrame
         self.tomorrow_pops_df: pd.DataFrame
@@ -87,7 +78,9 @@ class WeatherForecast:
         # 1週間分の情報([1])を取得
         week_forecast_response_dict = self.response_dict[1]
         # 気象情報レポート日時
-        report_datetime: datetime.date = week_forecast_response_dict["reportDatetime"]
+        report_datetime: str = datetime.datetime.strptime(
+            week_forecast_response_dict["reportDatetime"], "%Y-%m-%dT%H:%M:%S%z"
+        ).strftime("%Y-%m-%d %H:%M:%S")
         # 気象台名
         meteorological_observatory_name = week_forecast_response_dict[
             "publishingOffice"
@@ -124,14 +117,14 @@ class WeatherForecast:
     def __extract_fewdays_weather(
         self,
         fewdays_weather_dict: dict[str, Any],
-        report_datetime: datetime.datetime,
+        report_datetime: str,
         meteorological_observatory_name: str,
     ):
         """
         数日分(2日分?)の予報値を抽出しDataFrameに格納する
         Args:
             fewdays_weather_dict: dict[str, Any]: 該当予報値辞書
-            report_datetime: datetime.datetime: 気象情報レポート日時
+            report_datetime: str: 気象情報レポート日時
             meteorological_observatory_name: str: 気象台名
         """
 
@@ -165,7 +158,7 @@ class WeatherForecast:
                 winds += area["winds"][1:]
                 waves += area.get("waves", [np.nan] * (len(datetimes) + 1))[1:]
             except Exception as e:
-                logger.exception(f"area is {area}")
+                cloud_logger.exception(f"area is {area}")
 
         fewdays_weather_df = pd.DataFrame(
             {
@@ -211,14 +204,14 @@ class WeatherForecast:
     def __extract_tomorrow_pops(
         self,
         tomorrow_pops_dict: dict[str, Any],
-        report_datetime: datetime.datetime,
+        report_datetime: str,
         meteorological_observatory_name: str,
     ):
         """
         明日分の降水確率予報値を抽出しDataFrameに格納する
         Args:
             fewdays_weather_dict: dict[str, Any]: 該当予報値辞書
-            report_datetime: datetime.datetime: 気象情報レポート日時
+            report_datetime: str: 気象情報レポート日時
             meteorological_observatory_name: str: 気象台名
         """
 
@@ -227,7 +220,7 @@ class WeatherForecast:
         # 地方名
         area_names: list[str] = []
         # 予報対象日
-        forecast_target_dates: list[datetime.date] = []
+        forecast_target_dates: list[str] = []
         # 降水確率0-6 (pop = probability of precipitation の略)
         pops0006: list[int] = []
         # 降水確率6-12
@@ -253,7 +246,7 @@ class WeatherForecast:
                 pops1218 += [area["pops"][3]]
                 pops1824 += [area["pops"][4]]
             except Exception as e:
-                logger.exception(f"area is {area}")
+                cloud_logger.exception(f"area is {area}")
 
         tomorrow_pops_df = pd.DataFrame(
             {
@@ -299,14 +292,14 @@ class WeatherForecast:
     def __extract_tomorrow_temps(
         self,
         tomorrow_temps_dict: dict[str, Any],
-        report_datetime: datetime.datetime,
+        report_datetime: SyntaxError(),
         meteorological_observatory_name: str,
     ):
         """
         明日分の気温予報値を抽出しDataFrameに格納する
         Args:
             fewdays_weather_dict: dict[str, Any]: 該当予報値辞書
-            report_datetime: datetime.datetime: 気象情報レポート日時
+            report_datetime: str: 気象情報レポート日時
             meteorological_observatory_name: str: 気象台名
         """
 
@@ -315,7 +308,7 @@ class WeatherForecast:
         # 代表都市名
         city_names: list[str] = []
         # 予報対象日
-        forecast_target_dates: list[datetime.date] = []
+        forecast_target_dates: list[str] = []
         # 最高気温
         lowest_temperatures: list[float] = []
         # 最低気温
@@ -334,7 +327,7 @@ class WeatherForecast:
                 lowest_temperatures += [area["temps"][0]]
                 highest_temperatures += [area["temps"][1]]
             except Exception as e:
-                logger.exception(f"area is {area}")
+                cloud_logger.exception(f"area is {area}")
 
         tomorrow_temps_df = pd.DataFrame(
             {
@@ -375,21 +368,21 @@ class WeatherForecast:
     def __extract_week_weather(
         self,
         week_weather_dict: dict[str, Any],
-        report_datetime: datetime.datetime,
+        report_datetime: str,
         meteorological_observatory_name: str,
     ):
         """
         1週間分の気象予報値を抽出しDataFrameに格納する
         Args:
             fewdays_weather_dict: dict[str, Any]: 該当予報値辞書
-            report_datetime: datetime.datetime: 気象情報レポート日時
+            report_datetime: str: 気象情報レポート日時
             meteorological_observatory_name: str: 気象台名
         """
 
         # 変数宣言
         area_codes: list[str] = []
         area_names: list[str] = []
-        forecast_target_dates: list[datetime.date] = []
+        forecast_target_dates: list[str] = []
         weather_codes: list[str] = []
         pops: list[int] = []
         reliabilities: list[str] = []
@@ -413,7 +406,7 @@ class WeatherForecast:
                     i if i != "" else np.nan for i in area["reliabilities"]
                 ]
             except Exception as e:
-                logger.exception(f"area is {area}")
+                cloud_logger.exception(f"area is {area}")
 
         week_weather_df = pd.DataFrame(
             {
@@ -456,20 +449,20 @@ class WeatherForecast:
     def __extract_week_temps(
         self,
         week_temps_dict: dict[str, Any],
-        report_datetime: datetime.datetime,
+        report_datetime: str,
         meteorological_observatory_name: str,
     ):
         """
         1週間分の気温予報値を抽出しDataFrameに格納する
         Args:
             fewdays_weather_dict: dict[str, Any]: 該当予報値辞書
-            report_datetime: datetime.datetime: 気象情報レポート日時
+            report_datetime: str: 気象情報レポート日時
             meteorological_observatory_name: str: 気象台名
         """
 
         city_codes: list[str] = []
         city_names: list[str] = []
-        forecast_target_dates: list[datetime.date] = []
+        forecast_target_dates: list[str] = []
         lowest_temperatures: list[float] = []
         lowest_temperature_uppers: list[float] = []
         lowest_temperature_lowers: list[float] = []
@@ -509,7 +502,7 @@ class WeatherForecast:
                     i if i != "" else np.nan for i in city["tempsMaxLower"]
                 ]
             except Exception as e:
-                logger.exception(f"city is {city}")
+                cloud_logger.exception(f"city is {city}")
 
         week_temps_df = pd.DataFrame(
             {
@@ -558,14 +551,14 @@ class WeatherForecast:
     def __extract_past_tempavg(
         self,
         past_tempavg_dict: dict[str, Any],
-        report_datetime: datetime.datetime,
+        report_datetime: str,
         meteorological_observatory_name: str,
     ):
         """
         向こう1週間の平年気温を抽出しDataFrameに格納する
         Args:
             fewdays_weather_dict: dict[str, Any]: 該当予報値辞書
-            report_datetime: datetime.datetime: 気象情報レポート日時
+            report_datetime: str: 気象情報レポート日時
             meteorological_observatory_name: str: 気象台名
         """
 
@@ -586,7 +579,7 @@ class WeatherForecast:
                 # 最高気温
                 highest_temperatures += [city["max"]]
             except Exception as e:
-                logger.exception(f"city is {city}")
+                cloud_logger.exception(f"city is {city}")
 
         past_tempavg_df = pd.DataFrame(
             {
@@ -604,7 +597,7 @@ class WeatherForecast:
         # 気象台名
         past_tempavg_df[
             "meteorological_observatory_name"
-        ] = meteorological_observatory_name
+        ] = meteorological_observatory_namex
 
         self.past_tempavg_df = past_tempavg_df[
             [
@@ -621,14 +614,14 @@ class WeatherForecast:
     def __extract_past_precipitationavg(
         self,
         past_precipitationavg_dict: dict[str, Any],
-        report_datetime: datetime.datetime,
+        report_datetime: str,
         meteorological_observatory_name: str,
     ):
         """
         向こう1週間の平年降水量を抽出しDataFrameに格納する
         Args:
             fewdays_weather_dict: dict[str, Any]: 該当予報値辞書
-            report_datetime: datetime.datetime: 気象情報レポート日時
+            report_datetime: str: 気象情報レポート日時
             meteorological_observatory_name: str: 気象台名
         """
 
@@ -649,7 +642,7 @@ class WeatherForecast:
                 # 最高気温
                 precopitation_maxs += [city["max"]]
             except Exception as e:
-                logger.exception(f"city is {city}")
+                cloud_logger.exception(f"city is {city}")
 
         past_precopitationavg_df = pd.DataFrame(
             {

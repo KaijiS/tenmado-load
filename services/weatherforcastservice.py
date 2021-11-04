@@ -8,17 +8,7 @@ from utils import bq
 from utils import files
 from utils import jinja2
 from utils import decorator
-
-from logging import getLogger
-from logging import DEBUG
-from logging import StreamHandler
-from logging import Formatter
-
-logger = getLogger(__name__)
-logger.setLevel(DEBUG)
-handler = StreamHandler()
-handler.setLevel(DEBUG)
-logger.addHandler(handler)
+from utils.logger import cloud_logger
 
 
 def fetch_meteorological_observatory_codes(project_id: str):
@@ -153,7 +143,7 @@ def gcsweatherforecastfiles_to_bqtable(config):
     """
 
     # エラーディレクトリ用タイムスタンプを準備
-    now = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9)))
+    now = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9), "JST"))
     now_str = now.strftime("%Y%m%d%H%M%S")
 
     for data in config["import_data"].values():
@@ -176,7 +166,7 @@ def gcsweatherforecastfiles_to_bqtable(config):
                 destination_bucket_name=config["bucket_name"],
                 destination_blob_name=f"{config['gcs_error_dir']}/{now_str}/{data['filename']}",
             )
-            logger.error(f"Import Error: {data['filename']} to BigQuery Table")
+            cloud_logger.error(f"Import Error: {data['filename']} to BigQuery Table")
 
     return
 
