@@ -6,16 +6,7 @@ import yaml
 
 from utils import gcs
 
-from logging import getLogger
-from logging import DEBUG
-from logging import StreamHandler
-from logging import Formatter
-
-logger = getLogger(__name__)
-logger.setLevel(DEBUG)
-handler = StreamHandler()
-handler.setLevel(DEBUG)
-logger.addHandler(handler)
+from utils.logger import cloud_logger as logger
 
 
 def read_file(filepath: str) -> str:

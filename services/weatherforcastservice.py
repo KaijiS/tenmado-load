@@ -8,7 +8,7 @@ from utils import bq
 from utils import files
 from utils import jinja2
 from utils import decorator
-from utils.logger import cloud_logger
+from utils.logger import cloud_logger as logger
 
 
 def fetch_meteorological_observatory_codes(project_id: str):
@@ -166,7 +166,7 @@ def gcsweatherforecastfiles_to_bqtable(config):
                 destination_bucket_name=config["bucket_name"],
                 destination_blob_name=f"{config['gcs_error_dir']}/{now_str}/{data['filename']}",
             )
-            cloud_logger.error(f"Import Error: {data['filename']} to BigQuery Table")
+            logger.error(f"Import Error: {data['filename']} to BigQuery Table")
 
     return
 

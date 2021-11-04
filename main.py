@@ -7,11 +7,7 @@ from logging import DEBUG
 from logging import StreamHandler
 from logging import Formatter
 
-logger = getLogger(__name__)
-logger.setLevel(DEBUG)
-handler = StreamHandler()
-handler.setLevel(DEBUG)
-logger.addHandler(handler)
+from utils.logger import cloud_logger as logger
 
 
 def main(event, context):
@@ -30,7 +26,7 @@ def main(event, context):
         # 出力したCSVファイルをBigQueryへinsert
         weatherforcastservice.gcsweatherforecastfiles_to_bqtable()
 
-        logger.info("finish tenmado-load")
+        logger.info("complete tenmado-load")
 
     except Exception as e:
         # TODO GCSのファイルをエラーフォルダにコピーするか相談

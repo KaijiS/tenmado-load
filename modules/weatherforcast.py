@@ -6,7 +6,7 @@ import pandas as pd
 
 from typing import Any
 
-from utils.logger import cloud_logger
+from utils.logger import cloud_logger as logger
 
 
 class WeatherForecast:
@@ -158,7 +158,7 @@ class WeatherForecast:
                 winds += area["winds"][1:]
                 waves += area.get("waves", [np.nan] * (len(datetimes) + 1))[1:]
             except Exception as e:
-                cloud_logger.exception(f"area is {area}")
+                logger.exception(f"area is {area}")
 
         fewdays_weather_df = pd.DataFrame(
             {
@@ -246,7 +246,7 @@ class WeatherForecast:
                 pops1218 += [area["pops"][3]]
                 pops1824 += [area["pops"][4]]
             except Exception as e:
-                cloud_logger.exception(f"area is {area}")
+                logger.exception(f"area is {area}")
 
         tomorrow_pops_df = pd.DataFrame(
             {
@@ -327,7 +327,7 @@ class WeatherForecast:
                 lowest_temperatures += [area["temps"][0]]
                 highest_temperatures += [area["temps"][1]]
             except Exception as e:
-                cloud_logger.exception(f"area is {area}")
+                logger.exception(f"area is {area}")
 
         tomorrow_temps_df = pd.DataFrame(
             {
@@ -406,7 +406,7 @@ class WeatherForecast:
                     i if i != "" else np.nan for i in area["reliabilities"]
                 ]
             except Exception as e:
-                cloud_logger.exception(f"area is {area}")
+                logger.exception(f"area is {area}")
 
         week_weather_df = pd.DataFrame(
             {
@@ -502,7 +502,7 @@ class WeatherForecast:
                     i if i != "" else np.nan for i in city["tempsMaxLower"]
                 ]
             except Exception as e:
-                cloud_logger.exception(f"city is {city}")
+                logger.exception(f"city is {city}")
 
         week_temps_df = pd.DataFrame(
             {
@@ -579,7 +579,7 @@ class WeatherForecast:
                 # 最高気温
                 highest_temperatures += [city["max"]]
             except Exception as e:
-                cloud_logger.exception(f"city is {city}")
+                logger.exception(f"city is {city}")
 
         past_tempavg_df = pd.DataFrame(
             {
@@ -642,7 +642,7 @@ class WeatherForecast:
                 # 最高気温
                 precopitation_maxs += [city["max"]]
             except Exception as e:
-                cloud_logger.exception(f"city is {city}")
+                logger.exception(f"city is {city}")
 
         past_precopitationavg_df = pd.DataFrame(
             {

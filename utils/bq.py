@@ -1,15 +1,6 @@
 from google.cloud import bigquery
 from google.cloud.exceptions import NotFound
-from logging import getLogger
-from logging import DEBUG
-from logging import StreamHandler
-from logging import Formatter
-
-logger = getLogger(__name__)
-logger.setLevel(DEBUG)
-handler = StreamHandler()
-handler.setLevel(DEBUG)
-logger.addHandler(handler)
+from utils.logger import cloud_logger as logger
 
 
 def exe_query(query: str):
