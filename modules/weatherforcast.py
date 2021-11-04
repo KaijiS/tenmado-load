@@ -597,7 +597,7 @@ class WeatherForecast:
         # 気象台名
         past_tempavg_df[
             "meteorological_observatory_name"
-        ] = meteorological_observatory_namex
+        ] = meteorological_observatory_name
 
         self.past_tempavg_df = past_tempavg_df[
             [
