@@ -26,10 +26,9 @@ def main(event, context):
         # 出力したCSVファイルをBigQueryへinsert
         weatherforcastservice.gcsweatherforecastfiles_to_bqtable()
 
-        logger.info("complete tenmado-load")
+        logger.info("[completed] tenmado-load")
 
     except Exception as e:
-        # TODO GCSのファイルをエラーフォルダにコピーするか相談
 
         logger.exception("tenmado-load error")
 

@@ -1,9 +1,22 @@
+import os
 import logging
-from google.cloud.logging import Client
+from google.cloud.logging import Client, Resource
 from google.cloud.logging.handlers import CloudLoggingHandler
 
+
 logging_client = Client()
-handler = CloudLoggingHandler(logging_client)
-cloud_logger = logging.getLogger()
-cloud_logger.setLevel(logging.INFO)
-cloud_logger.addHandler(handler)
+resource = Resource(
+    type="cloud_function",
+    labels={
+        "function_name": os.environ.get("_FUNCTION_NAME"),
+        "project_id": os.environ.get("_PROJECT_ID"),
+        "region": os.environ.get("_REGION"),
+    },
+)
+handler = CloudLoggingHandler(logging_client, resource=resource)
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+streamhandler = logging.StreamHandler()
+streamhandler.setLevel(logging.INFO)
+logger.addHandler(handler)
+logger.addHandler(streamhandler)
