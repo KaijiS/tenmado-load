@@ -6,7 +6,7 @@ import pandas as pd
 
 from typing import Any
 
-from utils.logger import cloud_logger as logger
+from utils.logger import logger
 
 
 class WeatherForecast:

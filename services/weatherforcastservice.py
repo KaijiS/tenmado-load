@@ -8,7 +8,7 @@ from utils import bq
 from utils import files
 from utils import jinja2
 from utils import decorator
-from utils.logger import cloud_logger as logger
+from utils.logger import logger
 
 
 def fetch_meteorological_observatory_codes(project_id: str):

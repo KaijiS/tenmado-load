@@ -6,7 +6,7 @@ import yaml
 
 from utils import gcs
 
-from utils.logger import cloud_logger as logger
+from utils.logger import logger
 
 
 def read_file(filepath: str) -> str:

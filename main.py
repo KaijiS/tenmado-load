@@ -2,12 +2,7 @@ import base64
 
 from services import weatherforcastservice
 
-from logging import getLogger
-from logging import DEBUG
-from logging import StreamHandler
-from logging import Formatter
-
-from utils.logger import cloud_logger as logger
+from utils.logger import logger
 
 
 def main(event, context):

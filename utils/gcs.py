@@ -1,5 +1,5 @@
 from google.cloud import storage
-from utils.logger import cloud_logger as logger
+from utils.logger import logger
 
 
 def from_gcs(bucket_name: str, filepath: str, download_path: str):

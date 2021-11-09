@@ -1,6 +1,6 @@
 from google.cloud import bigquery
 from google.cloud.exceptions import NotFound
-from utils.logger import cloud_logger as logger
+from utils.logger import logger
 
 
 def exe_query(query: str):
