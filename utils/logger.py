@@ -1,7 +1,7 @@
 import os
 import logging
 from google.cloud.logging import Client, Resource
-from google.cloud.logging.handlers import CloudLoggingHandler
+from google.cloud.logging.handlers import CloudLoggingHandler, setup_logging
 
 
 def setup_logger():
