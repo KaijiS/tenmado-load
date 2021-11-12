@@ -1,5 +1,10 @@
+import logging
+
 from google.cloud import storage
-from utils.logger import logger
+
+# loggerの設定
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 
 def from_gcs(bucket_name: str, filepath: str, download_path: str):

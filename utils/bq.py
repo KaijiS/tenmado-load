@@ -1,6 +1,11 @@
+import logging
+
 from google.cloud import bigquery
 from google.cloud.exceptions import NotFound
-from utils.logger import logger
+
+# loggerの設定
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 
 def exe_query(query: str):

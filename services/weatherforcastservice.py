@@ -1,4 +1,5 @@
 import datetime
+import logging
 
 import pandas as pd
 
@@ -8,7 +9,10 @@ from utils import bq
 from utils import files
 from utils import jinja2
 from utils import decorator
-from utils.logger import logger
+
+# loggerの設定
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 
 def fetch_meteorological_observatory_codes(project_id: str):
