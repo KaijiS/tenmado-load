@@ -1,8 +1,9 @@
 import base64
+import logging
 
 from services import weatherforcastservice
 
-from utils.logger import logger
+from utils.logger import setup_logger
 
 
 def main(event, context):
@@ -13,6 +14,11 @@ def main(event, context):
     """
     pubsub_message = base64.b64decode(event["data"]).decode("utf-8")
     # ただのトリガーなのでpubsumメッセージ内容は無視
+
+    # loggerの設定
+    setup_logger()
+    logger = logging.getLogger(__name__)
+    logger.setLevel(logging.INFO)
 
     try:
         # 全気象台分リクエスト実行しローカルにcsv出力→ GCSアップロード

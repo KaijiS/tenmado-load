@@ -1,12 +1,16 @@
 import requests
 import json
 import datetime
+import logging
+
 import numpy as np
 import pandas as pd
 
 from typing import Any
 
-from utils.logger import logger
+# loggerの設定
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 
 class WeatherForecast:

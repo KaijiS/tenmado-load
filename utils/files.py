@@ -1,12 +1,15 @@
 import os
 import pickle
+import logging
 from typing import Optional
 
 import yaml
 
 from utils import gcs
 
-from utils.logger import logger
+# loggerの設定
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 
 def read_file(filepath: str) -> str:
